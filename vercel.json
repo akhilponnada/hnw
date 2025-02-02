@@ -11,6 +11,24 @@
     },
     "VERCEL_URL": {
       "type": "system"
+    },
+    "NEXT_PUBLIC_FIREBASE_API_KEY": {
+      "type": "encrypted"
+    },
+    "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN": {
+      "type": "encrypted"
+    },
+    "NEXT_PUBLIC_FIREBASE_PROJECT_ID": {
+      "type": "encrypted"
+    },
+    "NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET": {
+      "type": "encrypted"
+    },
+    "NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID": {
+      "type": "encrypted"
+    },
+    "NEXT_PUBLIC_FIREBASE_APP_ID": {
+      "type": "encrypted"
     }
   },
   "build": {

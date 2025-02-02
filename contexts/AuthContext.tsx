@@ -19,21 +19,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      setUser(user)
-      setLoading(false)
-    })
+    if (typeof window !== "undefined") {
+      const unsubscribe = auth.onAuthStateChanged((user) => {
+        setUser(user)
+        setLoading(false)
+      })
 
-    return () => unsubscribe()
+      return () => unsubscribe()
+    }
   }, [])
 
   return (
     <AuthContext.Provider value={{ user, loading }}>
-      {children}
+      {!loading ? children : <div>Loading...</div>}
     </AuthContext.Provider>
   )
 }
 
 export function useAuth() {
-  return useContext(AuthContext)
+  const context = useContext(AuthContext)
+  if (context === undefined) {
+    throw new Error("useAuth must be used within an AuthProvider")
+  }
+  return context
 } 
