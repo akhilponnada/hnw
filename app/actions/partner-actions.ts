@@ -1,6 +1,6 @@
 "use server"
 
-import { sql } from "@vercel/postgres"
+import { prisma } from "@/lib/prisma"
 
 export async function registerPartner(formData: {
   name: string
@@ -12,10 +12,17 @@ export async function registerPartner(formData: {
   contactPhone: string
 }) {
   try {
-    await sql`
-      INSERT INTO partners (name, category, description, website, contact_name, contact_email, contact_phone, status)
-      VALUES (${formData.name}, ${formData.category}, ${formData.description}, ${formData.website}, ${formData.contactName}, ${formData.contactEmail}, ${formData.contactPhone}, 'pending')
-    `
+    await prisma.partner.create({
+      data: {
+        name: formData.name,
+        category: formData.category,
+        description: formData.description,
+        website: formData.website,
+        contactName: formData.contactName,
+        contactEmail: formData.contactEmail,
+        contactPhone: formData.contactPhone,
+      },
+    })
     return { success: true }
   } catch (error) {
     console.error("Error registering partner:", error)
@@ -25,11 +32,13 @@ export async function registerPartner(formData: {
 
 export async function getPartnersByCategory(category: string) {
   try {
-    const partners = await sql`
-      SELECT * FROM partners
-      WHERE category = ${category} AND status = 'approved'
-    `
-    return partners.rows
+    const partners = await prisma.partner.findMany({
+      where: {
+        category,
+        status: "approved",
+      },
+    })
+    return partners
   } catch (error) {
     console.error("Error fetching partners:", error)
     return getMockPartners(category)
@@ -45,6 +54,13 @@ function getMockPartners(category: string) {
       description: `A leading ${category} partner for HNW.one`,
       category: category,
       image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=300&h=200",
+      website: "https://example.com",
+      contactName: "John Doe",
+      contactEmail: "john@example.com",
+      contactPhone: "1234567890",
+      status: "approved",
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       id: 2,
@@ -52,6 +68,13 @@ function getMockPartners(category: string) {
       description: `An innovative ${category} partner in our network`,
       category: category,
       image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=300&h=200",
+      website: "https://example.com",
+      contactName: "Jane Smith",
+      contactEmail: "jane@example.com",
+      contactPhone: "0987654321",
+      status: "approved",
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       id: 3,
@@ -59,6 +82,13 @@ function getMockPartners(category: string) {
       description: `A trusted ${category} partner for HNW.one members`,
       category: category,
       image: "https://images.unsplash.com/photo-1516549655669-df64cee12a2a?auto=format&fit=crop&q=80&w=300&h=200",
+      website: "https://example.com",
+      contactName: "Bob Wilson",
+      contactEmail: "bob@example.com",
+      contactPhone: "1122334455",
+      status: "approved",
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
   ]
   return mockPartners

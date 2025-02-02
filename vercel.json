@@ -5,7 +5,17 @@
   "framework": "nextjs",
   "regions": ["iad1"],
   "env": {
-    "NEXTAUTH_URL": "https://${VERCEL_URL}",
-    "VERCEL_URL": "${VERCEL_URL}"
+    "NEXTAUTH_URL": {
+      "type": "string",
+      "value": "https://$VERCEL_URL"
+    },
+    "VERCEL_URL": {
+      "type": "system"
+    }
+  },
+  "build": {
+    "env": {
+      "DATABASE_URL": "@database_url"
+    }
   }
 } 

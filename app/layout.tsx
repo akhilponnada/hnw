@@ -8,6 +8,7 @@ import { TopBar } from "@/components/top-bar"
 import { WhatsAppFloat } from "@/components/whatsapp-float"
 import { CartProvider } from "@/contexts/CartContext"
 import { CurrencyProvider } from "@/contexts/CurrencyContext"
+import { AuthProvider } from "@/contexts/AuthContext"
 import { AdBanner } from "@/components/ad-banner"
 import { Chatbot } from "@/components/chatbot"
 
@@ -43,20 +44,22 @@ export default function RootLayout({
   return (
     <html lang="en" className={`scroll-smooth ${poppins.variable}`}>
       <body className="font-poppins">
-        <CurrencyProvider>
-          <CartProvider>
-            <TopBar />
-            <Header />
-            <div className="mb-8">
-              <AdBanner currentRoute="/events" />
-            </div>
-            <main className="relative z-20">{children}</main>
-            <Footer />
-            <AISearch />
-            <WhatsAppFloat />
-            <Chatbot />
-          </CartProvider>
-        </CurrencyProvider>
+        <AuthProvider>
+          <CurrencyProvider>
+            <CartProvider>
+              <TopBar />
+              <Header />
+              <div className="mb-8">
+                <AdBanner currentRoute="/events" />
+              </div>
+              <main className="relative z-20">{children}</main>
+              <Footer />
+              <AISearch />
+              <WhatsAppFloat />
+              <Chatbot />
+            </CartProvider>
+          </CurrencyProvider>
+        </AuthProvider>
       </body>
     </html>
   )

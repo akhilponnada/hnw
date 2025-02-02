@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, Suspense } from "react"
 import { useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -26,7 +26,15 @@ const categories = [
   "Home Healthcare",
 ]
 
-export default function JoinPartnerPage() {
+function JoinPartnerForm() {
+  return (
+    <Suspense fallback={<div>Loading form...</div>}>
+      <JoinPartnerFormContent />
+    </Suspense>
+  )
+}
+
+function JoinPartnerFormContent() {
   const searchParams = useSearchParams()
   const initialCategory = searchParams.get("category")
 
@@ -62,6 +70,99 @@ export default function JoinPartnerPage() {
   }
 
   return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Join Our Network</CardTitle>
+        <CardDescription>
+          Fill out the form below to register as a partner with HNW.one. We'll review your application and get
+          back to you soon.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <Label htmlFor="name">Organization Name</Label>
+            <Input id="name" name="name" value={formData.name} onChange={handleChange} required />
+          </div>
+          <div>
+            <Label htmlFor="category">Category</Label>
+            <Select name="category" value={formData.category} onValueChange={handleSelectChange} required>
+              <SelectTrigger>
+                <SelectValue placeholder="Select a category" />
+              </SelectTrigger>
+              <SelectContent>
+                {categories.map((category) => (
+                  <SelectItem key={category} value={category.toLowerCase()}>
+                    {category}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label htmlFor="description">Description</Label>
+            <Textarea
+              id="description"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div>
+            <Label htmlFor="website">Website</Label>
+            <Input
+              id="website"
+              name="website"
+              type="url"
+              value={formData.website}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div>
+            <Label htmlFor="contactName">Contact Person Name</Label>
+            <Input
+              id="contactName"
+              name="contactName"
+              value={formData.contactName}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div>
+            <Label htmlFor="contactEmail">Contact Email</Label>
+            <Input
+              id="contactEmail"
+              name="contactEmail"
+              type="email"
+              value={formData.contactEmail}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div>
+            <Label htmlFor="contactPhone">Contact Phone</Label>
+            <Input
+              id="contactPhone"
+              name="contactPhone"
+              type="tel"
+              value={formData.contactPhone}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <Button type="submit" className="w-full">
+            Submit Application
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
+  )
+}
+
+export default function JoinPartnerPage() {
+  return (
     <div className="container mx-auto px-4 py-16">
       <div className="mb-8">
         <h1 className="text-4xl font-bold mb-4">Partner with HNW.one</h1>
@@ -75,94 +176,7 @@ export default function JoinPartnerPage() {
           </div>
         </div>
         <div className="lg:w-1/2">
-          <Card>
-            <CardHeader>
-              <CardTitle>Join Our Network</CardTitle>
-              <CardDescription>
-                Fill out the form below to register as a partner with HNW.one. We'll review your application and get
-                back to you soon.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <Label htmlFor="name">Organization Name</Label>
-                  <Input id="name" name="name" value={formData.name} onChange={handleChange} required />
-                </div>
-                <div>
-                  <Label htmlFor="category">Category</Label>
-                  <Select name="category" value={formData.category} onValueChange={handleSelectChange} required>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {categories.map((category) => (
-                        <SelectItem key={category} value={category.toLowerCase()}>
-                          {category}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label htmlFor="description">Description</Label>
-                  <Textarea
-                    id="description"
-                    name="description"
-                    value={formData.description}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="website">Website</Label>
-                  <Input
-                    id="website"
-                    name="website"
-                    type="url"
-                    value={formData.website}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="contactName">Contact Person Name</Label>
-                  <Input
-                    id="contactName"
-                    name="contactName"
-                    value={formData.contactName}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="contactEmail">Contact Email</Label>
-                  <Input
-                    id="contactEmail"
-                    name="contactEmail"
-                    type="email"
-                    value={formData.contactEmail}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="contactPhone">Contact Phone</Label>
-                  <Input
-                    id="contactPhone"
-                    name="contactPhone"
-                    type="tel"
-                    value={formData.contactPhone}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <Button type="submit" className="w-full">
-                  Submit Application
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
+          <JoinPartnerForm />
         </div>
         <div className="lg:w-1/4 space-y-8">
           <CrmAd />
