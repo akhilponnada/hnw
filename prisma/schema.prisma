@@ -1,3 +1,35 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+model InsuranceQuote {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String
+  age       Int
+  coverage  Float
+  message   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SearchQuery {
+  id        String   @id @default(cuid())
+  query     String
+  createdAt DateTime @default(now())
+  results   Int
+}
+
 // Add this model to your existing schema
 model InsuranceQuoteRequest {
   id             Int      @id @default(autoincrement())

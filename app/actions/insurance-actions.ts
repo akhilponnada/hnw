@@ -8,21 +8,22 @@ export async function submitQuoteRequest(data: {
   email: string
   phoneNumber: string
   age: number
-  gender: string
-  coverageAmount: string
+  coverageAmount: number
+  message?: string
 }) {
   try {
-    await prisma.insuranceQuoteRequest.create({
+    await prisma.insuranceQuote.create({
       data: {
-        fullName: data.fullName,
+        name: data.fullName,
         email: data.email,
-        phoneNumber: data.phoneNumber,
+        phone: data.phoneNumber,
         age: data.age,
-        gender: data.gender,
-        coverageAmount: data.coverageAmount,
+        coverage: data.coverageAmount,
+        message: data.message,
       },
     })
     revalidatePath("/products/insurance-plans")
+    return { success: true }
   } catch (error) {
     console.error("Failed to submit quote request:", error)
     throw new Error("Failed to submit quote request. Please try again.")
