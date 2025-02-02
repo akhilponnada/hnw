@@ -1,0 +1,7 @@
+<svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+  <rect width="120" height="60" fill="#f0f0f0"/>
+  <circle cx="30" cy="30" r="20" fill="#4a90e2"/>
+  <path d="M60 10 L80 50 L40 50 Z" fill="#50c878"/>
+  <text x="95" y="40" font-family="Arial, sans-serif" font-size="24" fill="#333" text-anchor="middle">HC</text>
+</svg>
+

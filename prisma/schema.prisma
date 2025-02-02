@@ -1,0 +1,12 @@
+// Add this model to your existing schema
+model InsuranceQuoteRequest {
+  id             Int      @id @default(autoincrement())
+  fullName       String
+  email          String
+  phoneNumber    String
+  age            Int
+  gender         String
+  coverageAmount String
+  createdAt      DateTime @default(now())
+}
+
